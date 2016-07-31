@@ -1,0 +1,8 @@
+#!/bin/sh
+
+peers_file=/consul/data/raft/peers.json
+if [ -e $peers_file ]; then
+  rm $peers_file
+fi
+
+/bin/consul "$@"

@@ -1,0 +1,5 @@
+FROM consul:latest
+
+RUN mkdir /scripts
+COPY scripts/run-consul /scripts/run-consul
+ENTRYPOINT ["/scripts/run-consul"]
