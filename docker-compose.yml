@@ -31,6 +31,13 @@ services:
     - 5672:5672
     - 15672:15672
 
+  nginx:
+    image: jwilder/nginx-proxy
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    ports:
+      - 80:80
+
 networks:
   default:
     external:
