@@ -29,7 +29,9 @@ services:
     ports:
     - 1883:1883
     - 5672:5672
-    - 15672:15672
+    environment:
+      VIRTUAL_HOST: rabbitmq.dev
+      VIRTUAL_PORT: 15672
 
   nginx:
     image: jwilder/nginx-proxy
