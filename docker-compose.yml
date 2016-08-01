@@ -31,7 +31,7 @@ services:
     - 1883:1883
     - 5672:5672
     environment:
-      VIRTUAL_HOST: rabbitmq.dev
+      VIRTUAL_HOST: rabbitmq.docker
       VIRTUAL_PORT: 15672
 
   nginx:
