@@ -42,6 +42,14 @@ services:
     ports:
       - 80:80
 
+  dnsmasq:
+    image: andyshinn/dnsmasq
+    container_name: dnsmasq
+    volumes:
+      - ./dnsmasq/dnsmasq.conf:/etc/dnsmasq.conf
+    ports:
+      - '53:53/udp'
+
 networks:
   default:
     external:
