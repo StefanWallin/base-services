@@ -8,10 +8,11 @@ services:
     container_name: consul
     hostname: consul
     command: agent -server -bootstrap -ui -client=0.0.0.0 -data-dir=/consul/data
-    ports:
-      - 8500:8500
     volumes:
       - consul_data:/consul/data
+    environment:
+      VIRTUAL_HOST: consul.docker
+      VIRTUAL_PORT: 8500
 
   postgres:
     image: postgres
