@@ -39,8 +39,10 @@ services:
     container_name: nginx
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./certs:/etc/nginx/certs
     ports:
       - '80:80'
+      - '443:443'
 
   dnsmasq:
     image: andyshinn/dnsmasq
