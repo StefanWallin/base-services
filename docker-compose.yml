@@ -7,9 +7,9 @@ services:
       dockerfile: Dockerfile-consul
     container_name: consul
     hostname: consul
-    command: agent -server -bootstrap -ui -client=0.0.0.0 -data-dir=/consul/data
+    command: agent -server -bootstrap-expect 1 -ui -client=0.0.0.0 -data-dir=/consul/data
     volumes:
-      - consul_data:/consul/data
+      - ./data/consul_data:/consul/data
     environment:
       VIRTUAL_HOST: consul.docker
       VIRTUAL_PORT: 8500
@@ -20,8 +20,8 @@ services:
     ports:
       - '5432:5432'
     volumes:
-      - postgres_data:/var/lib/postgresql/data
-   
+      - ./data/postgres_data:/var/lib/postgresql/data
+
   rabbitmq:
     image: rabbitmq:management
     container_name: rabbitmq
