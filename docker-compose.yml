@@ -7,12 +7,15 @@ services:
       dockerfile: Dockerfile-consul
     container_name: consul
     hostname: consul
-    command: agent -server -bootstrap-expect 1 -ui -client=0.0.0.0 -data-dir=/consul/data
+    command: agent -server -ui -bootstrap-expect=1 -bind=172.16.238.200 -client=0.0.0.0 -data-dir=/consul/data
     volumes:
       - ./data/consul_data:/consul/data
     environment:
       VIRTUAL_HOST: consul.docker
       VIRTUAL_PORT: 8500
+    networks:
+      services:
+        ipv4_address: 172.16.238.200
 
   postgres:
     image: postgres
@@ -21,6 +24,8 @@ services:
       - '5432:5432'
     volumes:
       - ./data/postgres_data:/var/lib/postgresql/data
+    networks:
+      - services
 
   rabbitmq:
     image: rabbitmq:management
@@ -33,6 +38,8 @@ services:
     environment:
       VIRTUAL_HOST: rabbitmq.docker
       VIRTUAL_PORT: 15672
+    networks:
+      - services
 
   nginx:
     image: jwilder/nginx-proxy
@@ -43,6 +50,8 @@ services:
     ports:
       - '80:80'
       - '443:443'
+    networks:
+      - services
 
   dnsmasq:
     image: andyshinn/dnsmasq
@@ -51,12 +60,16 @@ services:
       - ./dnsmasq/dnsmasq.conf:/etc/dnsmasq.conf
     ports:
       - '53:53/udp'
+    networks:
+      - services
 
   redis:
     image: redis
     container_name: redis
     ports:
       - '6379:6379'
+    networks:
+      - services
 
   elasticsearch:
     image: elasticsearch:2.3
@@ -65,12 +78,17 @@ services:
       - '9300:9300'
     volumes:
       - ./elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+    networks:
+      - services
 
 networks:
-  default:
-    external:
-      name: dev
-
+  services:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.238.0/24
+          gateway: 172.16.238.1
 volumes:
   consul_data:
   postgres_data:
